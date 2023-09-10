@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,9 +20,16 @@ internal class CollectionPropertyFinder : IPropertyFinder, IViolationReporter
         var violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => !PropertyHelper.IsArray(property) && !this.ShouldBeIgnored(property) && PropertyHelper.ImplementsICollectionT(property.Type) && !HasProperAccess(property));
         foreach (var violation in violations)
         {
+
             Report(violation, classInfo);
+
+
         }
     }
+
+
+
+
     private static void Report(IPropertySymbol property, ClassInfo classInfo)
     {
         DiagnosticDescriptor error = new DiagnosticDescriptor(

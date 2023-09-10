@@ -1,4 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StrideDiagnostics.PropertyFinders;
@@ -25,5 +28,16 @@ internal static class PropertyHelper
 
         return false;
     }
+    public static bool IsDictionary(IPropertySymbol type, ClassInfo info)
+    {
 
+        INamedTypeSymbol dictionaryInterface = info.ExecutionContext.Compilation.GetTypeByMetadataName(typeof(IDictionary<,>).FullName);
+        var comparer = SymbolEqualityComparer.Default;
+        if (type.Type.AllInterfaces.Any(x => x.OriginalDefinition.Equals(dictionaryInterface, comparer)))
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

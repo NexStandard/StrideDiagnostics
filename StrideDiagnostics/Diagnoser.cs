@@ -16,10 +16,12 @@ internal class Diagnoser
         IViolationReporter arrayReporter = new ArrayPropertyFinder();
         IViolationReporter collectionReporter = new CollectionPropertyFinder();
         IViolationReporter propertyReporter = new PropertyFinder();
+        IViolationReporter dictionaryReporter = new DictionaryKeyReporter();
         var symbol = info.Symbol;
         arrayReporter.ReportViolations(ref symbol, info);
         collectionReporter.ReportViolations(ref symbol, info);
         propertyReporter.ReportViolations(ref symbol, info);
+        dictionaryReporter.ReportViolations(ref symbol, info);
     }
 
 
