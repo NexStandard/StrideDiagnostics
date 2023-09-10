@@ -9,7 +9,7 @@ internal static class DiagnosticsHelper
 
     public static IEnumerable<Diagnostic> GetDiagnostics(string sourceCode)
     {
-        var compilation = CSharpCompilation.Create(new Guid().ToString())
+        var compilation = CSharpCompilation.Create("test")
                     .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                     .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
                     .AddSyntaxTrees(CSharpSyntaxTree.ParseText(sourceCode));

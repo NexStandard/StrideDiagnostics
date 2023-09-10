@@ -50,8 +50,6 @@ internal class PropertyAttributeFinder
             &&
                 (propertyInfo.GetMethod?.DeclaredAccessibility == Accessibility.Public ||
                 propertyInfo.GetMethod?.DeclaredAccessibility == Accessibility.Internal);
-
-
     }
     private static bool HasDataMemberIgnoreAttribute(IPropertySymbol property)
     {

@@ -1,9 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using StrideDiagnostics.PropertyFinder;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace StrideDiagnostics.PropertyFinders;
 public static class PropertyAttributeFinderExtension
@@ -24,14 +20,21 @@ public static class PropertyAttributeFinderExtension
     /// </remarks>
     public static bool ShouldBeIgnored(this IPropertyFinder finder, IPropertySymbol property)
     {
+        if (property.DeclaredAccessibility == Accessibility.Private ||
+            property.DeclaredAccessibility == Accessibility.ProtectedAndInternal ||
+            property.DeclaredAccessibility == Accessibility.NotApplicable ||
+            property.DeclaredAccessibility == Accessibility.Protected)
+        {
+            return true;
+        }
         var attributes = property.GetAttributes();
         foreach (var attribute in attributes)
         {
             var attributeType = attribute.AttributeClass;
             if (attributeType != null)
             {
-                if (attributeType.Name == "DataMemberIgnore" &&
-                    (attributeType.ContainingNamespace.Name == "Stride.Core"))
+                if (attributeType.Name == "DataMemberIgnore" ||
+                    (attributeType.Name == "Stride.Core.DataMemberIgnore"))
                 {
                     return true;
                 }

@@ -1,19 +1,51 @@
 ﻿using Microsoft.CodeAnalysis;
-using StrideDiagnostics.PropertyFinder;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace StrideDiagnostics.PropertyFinders;
 public class PropertyFinder : IPropertyFinder, IViolationReporter
 {
     public IEnumerable<IPropertySymbol> Find(ref INamedTypeSymbol baseType)
     {
-        throw new NotImplementedException();
+        if (baseType == null)
+            return Enumerable.Empty<IPropertySymbol>();
+        return baseType.GetMembers().OfType<IPropertySymbol>().Where(property => !PropertyHelper.IsArray(property) && !PropertyHelper.ImplementsICollectionT(property.Type) && !this.ShouldBeIgnored(property) && HasProperAccess(property));
     }
 
     public void ReportViolations(ref INamedTypeSymbol baseType, ClassInfo classInfo)
     {
-        throw new NotImplementedException();
+        if (baseType == null)
+            return;
+        var violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => !PropertyHelper.IsArray(property) && !PropertyHelper.ImplementsICollectionT(property.Type) && !this.ShouldBeIgnored(property) && !HasProperAccess(property));
+        foreach (var violation in violations)
+        {
+            Report(violation, classInfo);
+        }
+    }
+    private static void Report(IPropertySymbol property, ClassInfo classInfo)
+    {
+        DiagnosticDescriptor error = new DiagnosticDescriptor(
+            id: string.Format(NexGenerator.CompilerServicesDiagnosticIdFormat, 3),
+            title: "Faulty Access",
+            category: NexGenerator.CompilerServicesDiagnosticCategory,
+            defaultSeverity: DiagnosticSeverity.Error,
+            isEnabledByDefault: true,
+            messageFormat: $"The Property '{property.Name}' has an invalid Access Type for a Property, expected for non Collection/Array is a public/internal get; and a public/internal set;/init; Accessor, Stride will not be able to use this Property as [DataMember]. Add [DataMemberIgnore] to let Stride Ignore the Member in the [DataContract] or change the get; accesibility.",
+            helpLinkUri: "https://www.stride3d.net"
+        );
+        Location location = Location.Create(classInfo.TypeSyntax.SyntaxTree, property.DeclaringSyntaxReferences.FirstOrDefault().Span);
+        classInfo.ExecutionContext.ReportDiagnostic(Diagnostic.Create(error, location));
+    }
+    private bool HasProperAccess(IPropertySymbol propertyInfo)
+    {
+        if (propertyInfo == null)
+            return false;
+        return (propertyInfo.SetMethod?.DeclaredAccessibility == Accessibility.Public ||
+                propertyInfo.SetMethod?.DeclaredAccessibility == Accessibility.Internal ||
+                propertyInfo.GetMethod?.ReturnsVoid == true
+            )
+            &&
+                (propertyInfo.GetMethod?.DeclaredAccessibility == Accessibility.Public ||
+                propertyInfo.GetMethod?.DeclaredAccessibility == Accessibility.Internal);
     }
 }

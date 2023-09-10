@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace StrideDiagnostics.PropertyFinder;
+namespace StrideDiagnostics.PropertyFinders;
 
 public interface IViolationReporter
 {

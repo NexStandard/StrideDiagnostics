@@ -4,11 +4,12 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-	  <ProjectReference Include="..\StrideDiagnostics\StrideDiagnostics.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-  <ProjectReference Include="..\StrideDiagnostics\StrideDiagnostics.csproj" />
+	  <ProjectReference Include="..\StrideDiagnostics\StrideDiagnostics.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+
   </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">

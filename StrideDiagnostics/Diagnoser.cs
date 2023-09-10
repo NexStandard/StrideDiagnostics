@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using StrideDiagnostics.PropertyFinder;
 using StrideDiagnostics.PropertyFinders;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +14,12 @@ internal class Diagnoser
     private void DiagnoseDataMember(ClassInfo info)
     {
         IViolationReporter arrayReporter = new ArrayPropertyFinder();
+        IViolationReporter collectionReporter = new CollectionPropertyFinder();
+        IViolationReporter propertyReporter = new PropertyFinder();
         var symbol = info.Symbol;
         arrayReporter.ReportViolations(ref symbol, info);
+        collectionReporter.ReportViolations(ref symbol, info);
+        propertyReporter.ReportViolations(ref symbol, info);
     }
 
 

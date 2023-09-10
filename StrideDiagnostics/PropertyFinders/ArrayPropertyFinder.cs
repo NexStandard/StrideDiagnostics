@@ -1,9 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
-using StrideDiagnostics.PropertyFinder;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace StrideDiagnostics.PropertyFinders;
 public class ArrayPropertyFinder : IViolationReporter, IPropertyFinder
@@ -25,18 +22,9 @@ public class ArrayPropertyFinder : IViolationReporter, IPropertyFinder
     {
         if (baseType == null)
             return Enumerable.Empty<IPropertySymbol>();
-        return baseType.GetMembers().OfType<IPropertySymbol>().Where(property => IsArray(property) && !this.ShouldBeIgnored(property) && HasProperAccess(property));
+        return baseType.GetMembers().OfType<IPropertySymbol>().Where(property => PropertyHelper.IsArray(property) && !this.ShouldBeIgnored(property) && HasProperAccess(property));
     }
-    private bool IsArray(IPropertySymbol propertyInfo)
-    {
-        var propertyType = propertyInfo.Type;
 
-        if (propertyType.TypeKind == TypeKind.Array)
-        {
-            return true;
-        }
-        return false;
-    }
     private bool HasProperAccess(IPropertySymbol property)
     {
         return property.GetMethod?.DeclaredAccessibility == Accessibility.Public ||
@@ -47,7 +35,7 @@ public class ArrayPropertyFinder : IViolationReporter, IPropertyFinder
     {
         if (baseType == null)
             return;
-        var violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => IsArray(property) && !this.ShouldBeIgnored(property) && !HasProperAccess(property));
+        var violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => PropertyHelper.IsArray(property) && !this.ShouldBeIgnored(property) && !HasProperAccess(property));
         foreach (var violation in violations)
         {
             Report(violation, info);
