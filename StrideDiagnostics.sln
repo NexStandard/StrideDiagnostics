@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrideDiagnostics", "StrideDiagnostics\StrideDiagnostics.csproj", "{7221AE59-F656-4CDC-8E91-3E15C8AF3B7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrideDiagnosticsTests", "StrideDiagnosticsTests\StrideDiagnosticsTests.csproj", "{8E659352-A2F2-452D-BBFB-2A79F8E64D06}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7221AE59-F656-4CDC-8E91-3E15C8AF3B7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7221AE59-F656-4CDC-8E91-3E15C8AF3B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7221AE59-F656-4CDC-8E91-3E15C8AF3B7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7221AE59-F656-4CDC-8E91-3E15C8AF3B7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E659352-A2F2-452D-BBFB-2A79F8E64D06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E659352-A2F2-452D-BBFB-2A79F8E64D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E659352-A2F2-452D-BBFB-2A79F8E64D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E659352-A2F2-452D-BBFB-2A79F8E64D06}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E6A16BBA-D620-478F-8BD8-7DE8192B24E0}
+	EndGlobalSection
+EndGlobal
