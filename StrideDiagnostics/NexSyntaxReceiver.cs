@@ -2,11 +2,14 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
+
 namespace StrideDiagnostics;
 
 public class NexSyntaxReceiver : ISyntaxReceiver
 {
     TypeAttributeFinder _typeFinder = new();
+    AttributeContextValidator _attributeContextValidator = new();
     public List<TypeDeclarationSyntax> TypeDeclarations { get; private set; } = new();
 
     public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
@@ -18,12 +21,17 @@ public class NexSyntaxReceiver : ISyntaxReceiver
             TypeDeclarations.Add(result);
         }
     }
-    private bool HasDataContractAttribute(TypeDeclarationSyntax typeDeclaration)
+    /// <summary>
+    /// Checks if the <see cref="TypeDeclarationSyntax"/> has a [DataContract] attribute or [Stride.Core.DataContract]
+    /// As there is no validation possible to decide if its from System or Stride this must be validated later again.
+    /// </summary>
+    /// <param name="info">The Type to check</param>
+    /// <returns>True if it has a DataContract Attribute, but its not sure if its the one from Stride</returns>
+    private bool HasDataContractAttribute(TypeDeclarationSyntax info)
     {
-        // Check if the type declaration has the [DataContract] attribute
-        return typeDeclaration.AttributeLists
+        return info.AttributeLists
             .SelectMany(attributeList => attributeList.Attributes)
-            .Any(attribute => attribute.Name.ToString() == "DataContract");
+            .Any(attribute => attribute.Name.ToString().Contains("DataContract"));
     }
 
     private bool HasStrideCoreDataContractAttribute(TypeDeclarationSyntax typeDeclaration)

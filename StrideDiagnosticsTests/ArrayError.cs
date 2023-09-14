@@ -22,7 +22,7 @@ public class ArrayError
         IEnumerable<Diagnostic> generatedDiagnostics = DiagnosticsHelper.GetDiagnostics(sourceCode);
         // Check if there are any diagnostics with the expected ID
         bool hasError = generatedDiagnostics.Any(diagnostic =>
-            diagnostic.Severity == DiagnosticSeverity.Error &&
+            diagnostic.Severity == DiagnosticSeverity.Warning &&
             diagnostic.Id == "STRD001");
 
         // Assert that there is an error

@@ -47,7 +47,7 @@ public class ArrayPropertyFinder : IViolationReporter, IPropertyFinder
             id: string.Format(NexGenerator.CompilerServicesDiagnosticIdFormat, 1),
             title: "Faulty Access",
             category: NexGenerator.CompilerServicesDiagnosticCategory,
-            defaultSeverity: DiagnosticSeverity.Error,
+            defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             messageFormat: $"The Property '{property.Name}' has an invalid Access Type for an Array, expected for Arrays is a public/internal get; Accessor, Stride will not be able to use this Property as [DataMember]. Add [DataMemberIgnore] to let Stride Ignore the Member in the [DataContract] or change the get; accesibility.",
             helpLinkUri: "https://www.stride3d.net"

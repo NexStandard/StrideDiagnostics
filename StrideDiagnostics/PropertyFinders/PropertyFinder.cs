@@ -28,7 +28,7 @@ public class PropertyFinder : IPropertyFinder, IViolationReporter
             id: string.Format(NexGenerator.CompilerServicesDiagnosticIdFormat, 3),
             title: "Faulty Access",
             category: NexGenerator.CompilerServicesDiagnosticCategory,
-            defaultSeverity: DiagnosticSeverity.Error,
+            defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             messageFormat: $"The Property '{property.Name}' has an invalid Access Type for a Property, expected for non Collection/Array is a public/internal get; and a public/internal set;/init; Accessor, Stride will not be able to use this Property as [DataMember]. Add [DataMemberIgnore] to let Stride Ignore the Member in the [DataContract] or change the get; accesibility.",
             helpLinkUri: "https://www.stride3d.net"

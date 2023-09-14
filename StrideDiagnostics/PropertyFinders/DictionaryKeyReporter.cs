@@ -56,7 +56,7 @@ internal class DictionaryKeyReporter : IViolationReporter, IPropertyFinder
     id: "STRD004",
     title: "Invalid Dictionary Key",
     category: NexGenerator.CompilerServicesDiagnosticCategory,
-    defaultSeverity: DiagnosticSeverity.Error,
+    defaultSeverity: DiagnosticSeverity.Warning,
     isEnabledByDefault: true,
     messageFormat: $"The Generic Key for '{property.Name}' is invalid, expected for a IDictionary<T,Y> is a struct/simple type Key to use this Property as [DataMember]. Add [DataMemberIgnore] to let Stride Ignore the Member in the [DataContract] or change the Dictionary Key.",
     helpLinkUri: "https://www.stride3d.net"
