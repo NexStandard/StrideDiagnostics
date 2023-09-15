@@ -33,8 +33,8 @@ internal class CollectionPropertyFinder : IPropertyFinder, IViolationReporter
     private static void Report(IPropertySymbol property, ClassInfo classInfo)
     {
         DiagnosticDescriptor error = new DiagnosticDescriptor(
-            id: "STRD002",
-            title: "Faulty Access Collection",
+            id: ErrorCodes.CollectionAccess,
+            title: "Invalid Access",
             category: NexGenerator.CompilerServicesDiagnosticCategory,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,

@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using StrideDiagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ public class IgnoreCollection
         Assert.True(!hasError, "The Property should be ignored with DataMemberIgnore.");
     }
     [Fact]
-    public void InvalidDictionary1()
+    public void InvalidDictionaryKey1()
     {
         // Define the source code for the Class1 class with an invalid property
         string sourceCode = @"
@@ -57,13 +58,13 @@ public class IgnoreCollection
 }";
         IEnumerable<Diagnostic> generatedDiagnostics = DiagnosticsHelper.GetDiagnostics(sourceCode);
         // Check if there are any diagnostics with the expected ID
-        bool hasError = generatedDiagnostics.Any(x => x.Id == "STRD004");
+        bool hasError = generatedDiagnostics.Any(x => x.Id == ErrorCodes.DictionaryKey);
 
         // Assert that there is an error
         Assert.True(hasError, "The Dictionary Key should be invalid.");
     }
     [Fact]
-    public void InvalidDictionary2()
+    public void InvalidDictionaryKey2()
     {
         // Define the source code for the Class1 class with an invalid property
         string sourceCode = @"
@@ -74,13 +75,13 @@ public class IgnoreCollection
 }";
         IEnumerable<Diagnostic> generatedDiagnostics = DiagnosticsHelper.GetDiagnostics(sourceCode);
         // Check if there are any diagnostics with the expected ID
-        bool hasError = generatedDiagnostics.Any(x => x.Id == "STRD004");
+        bool hasError = generatedDiagnostics.Any(x => x.Id == ErrorCodes.DictionaryKey);
 
         // Assert that there is an error
         Assert.True(hasError, "The Dictionary Key should be invalid.");
     }
     [Fact]
-    public void InvalidDictionary3()
+    public void InvalidDictionaryAccess()
     {
         // Define the source code for the Class1 class with an invalid property
         string sourceCode = @"
@@ -91,7 +92,7 @@ public class IgnoreCollection
 }";
         IEnumerable<Diagnostic> generatedDiagnostics = DiagnosticsHelper.GetDiagnostics(sourceCode);
         // Check if there are any diagnostics with the expected ID
-        bool hasError = generatedDiagnostics.Any(x => x.Id == "STRD002");
+        bool hasError = generatedDiagnostics.Any(x => x.Id == ErrorCodes.CollectionAccess);
 
         // Assert that there is an error
         Assert.True(hasError, "The Dictionary Key should be invalid.");

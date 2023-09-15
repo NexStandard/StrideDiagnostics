@@ -25,8 +25,8 @@ public class PropertyFinder : IPropertyFinder, IViolationReporter
     private static void Report(IPropertySymbol property, ClassInfo classInfo)
     {
         DiagnosticDescriptor error = new DiagnosticDescriptor(
-            id: string.Format(NexGenerator.CompilerServicesDiagnosticIdFormat, 3),
-            title: "Faulty Access",
+            id: ErrorCodes.PropertyAccess,
+            title: "Invalidq Access",
             category: NexGenerator.CompilerServicesDiagnosticCategory,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
