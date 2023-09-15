@@ -34,7 +34,7 @@ public static class PropertyAttributeFinderExtension
             if (attributeType != null)
             {
                 if (attributeType.Name == "DataMemberIgnore" ||
-                    (attributeType.Name == "Stride.Core.DataMemberIgnore"))
+                    (attributeType.Name == "DataMemberIgnoreAttribute"))
                 {
                     return true;
                 }
