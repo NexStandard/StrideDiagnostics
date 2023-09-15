@@ -26,7 +26,7 @@ public class PropertyFinder : IPropertyFinder, IViolationReporter
     {
         DiagnosticDescriptor error = new DiagnosticDescriptor(
             id: ErrorCodes.PropertyAccess,
-            title: "Invalidq Access",
+            title: "Invalid Access",
             category: NexGenerator.CompilerServicesDiagnosticCategory,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,

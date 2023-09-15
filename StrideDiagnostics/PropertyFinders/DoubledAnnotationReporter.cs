@@ -23,11 +23,10 @@ internal class DoubledAnnotationReporter : IViolationReporter, IPropertyFinder
     {
         if (baseType == null)
             return;
-        var violations = baseType.GetMembers().OfType<IPropertySymbol>().ToList();
+        var violations = baseType.GetMembers().OfType<IPropertySymbol>();
 
-        var violations3 = violations.Where(property => this.ShouldBeIgnored(property)).ToList();
-        var violations2 = violations3.Where(property => HasDataMemberAnnotation(property)).ToList();
-        foreach (var violation in violations2)
+        var violationsFiltered = violations.Where(property => this.ShouldBeIgnored(property) && this.HasDataMemberAnnotation(property));
+        foreach (var violation in violationsFiltered)
         {
 
             Report(violation, classInfo);
@@ -35,23 +34,7 @@ internal class DoubledAnnotationReporter : IViolationReporter, IPropertyFinder
 
         }
     }
-    private bool HasDataMemberAnnotation(IPropertySymbol property)
-    {
-        var attributes = property.GetAttributes();
-        foreach (var attribute in attributes)
-        {
-            var attributeType = attribute.AttributeClass;
-            if (attributeType != null)
-            {
-                if (attributeType.Name == "DataMember" ||
-                    (attributeType.Name == "DataMemberAttribute"))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+
 
     private static void Report(IPropertySymbol property, ClassInfo classInfo)
     {

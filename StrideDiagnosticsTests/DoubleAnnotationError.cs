@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Stride.Core;
 using StrideDiagnostics;
 using System;
 using System.Collections.Generic;

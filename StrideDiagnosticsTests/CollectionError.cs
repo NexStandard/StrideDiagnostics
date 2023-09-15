@@ -97,6 +97,7 @@ public class InvalidCollection
     {
         // Define the source code for the Class1 class with an invalid property
         string sourceCode = @"
+using Stride.Core;
 [DataContract]
 public class IgnoreCollection
 {

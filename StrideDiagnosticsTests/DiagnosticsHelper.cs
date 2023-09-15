@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Stride.Core;
 using StrideDiagnostics;
 
 namespace StrideDiagnosticsTests;
@@ -9,9 +10,11 @@ internal static class DiagnosticsHelper
 
     public static IEnumerable<Diagnostic> GetDiagnostics(string sourceCode)
     {
+
         var compilation = CSharpCompilation.Create("test")
                     .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                     .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
+                    .AddReferences(MetadataReference.CreateFromFile(typeof(DataMemberAttribute).Assembly.Location))
                     .AddSyntaxTrees(CSharpSyntaxTree.ParseText(sourceCode));
         var sourceGenerator = new NexGenerator(); // Replace with your actual source generator type
 

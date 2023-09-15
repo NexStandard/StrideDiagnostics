@@ -31,10 +31,27 @@ public static class PropertyAttributeFinderExtension
         foreach (var attribute in attributes)
         {
             var attributeType = attribute.AttributeClass;
+
             if (attributeType != null)
             {
-                if (attributeType.Name == "DataMemberIgnore" ||
-                    (attributeType.Name == "DataMemberIgnoreAttribute"))
+                if (attributeType.Name == "DataMemberIgnoreAttribute"
+                     && attributeType.ContainingNamespace.ContainingModule.Name == "Stride.Core.dll")
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public static bool HasDataMemberAnnotation(this IPropertyFinder finder, IPropertySymbol property)
+    {
+        var attributes = property.GetAttributes();
+        foreach (var attribute in attributes)
+        {
+            var attributeType = attribute.AttributeClass;
+            if (attributeType != null)
+            {
+                if (attributeType.Name == "DataMemberAttribute" && attributeType.ContainingNamespace.ContainingModule.Name == "Stride.Core.dll")
                 {
                     return true;
                 }
