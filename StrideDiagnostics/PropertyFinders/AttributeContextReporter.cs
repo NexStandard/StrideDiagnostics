@@ -23,10 +23,10 @@ internal class AttributeContextReporter : IViolationReporter, IPropertyFinder
     {
         if (baseType == null)
             return;
-        var violations = baseType.GetMembers().OfType<IPropertySymbol>();
+        IEnumerable<IPropertySymbol> violations = baseType.GetMembers().OfType<IPropertySymbol>();
 
-        var violationsFiltered = violations.Where(property => this.ShouldBeIgnored(property) && this.HasDataMemberAnnotation(property));
-        foreach (var violation in violationsFiltered)
+        IEnumerable<IPropertySymbol> violationsFiltered = violations.Where(property => this.ShouldBeIgnored(property) && this.HasDataMemberAnnotation(property));
+        foreach (IPropertySymbol violation in violationsFiltered)
         {
 
             Report(violation, classInfo);

@@ -14,7 +14,7 @@ public class DoubleAnnotationError
     [Fact]
     public void HasDataMemberAndDataMemberIgnoreAtTheSameTime()
     {
-        var sourceCode = @"
+        string sourceCode = @"
 using Stride.Core;
 [DataContract]
 public class DoubleAnnotation

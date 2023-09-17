@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
-using StrideSourceGenerator.Core.Properties;
 
 namespace StrideDiagnostics;
 public class ClassInfo

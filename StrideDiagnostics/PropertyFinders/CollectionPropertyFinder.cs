@@ -17,8 +17,8 @@ internal class CollectionPropertyFinder : IPropertyFinder, IViolationReporter
     {
         if (baseType == null)
             return;
-        var violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => !PropertyHelper.IsArray(property) && !this.ShouldBeIgnored(property) && PropertyHelper.ImplementsICollectionT(property.Type) && !HasProperAccess(property));
-        foreach (var violation in violations)
+        IEnumerable<IPropertySymbol> violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => !PropertyHelper.IsArray(property) && !this.ShouldBeIgnored(property) && PropertyHelper.ImplementsICollectionT(property.Type) && !HasProperAccess(property));
+        foreach (IPropertySymbol violation in violations)
         {
 
             Report(violation, classInfo);

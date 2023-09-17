@@ -35,8 +35,8 @@ public class ArrayPropertyFinder : IViolationReporter, IPropertyFinder
     {
         if (baseType == null)
             return;
-        var violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => PropertyHelper.IsArray(property) && !this.ShouldBeIgnored(property) && !HasProperAccess(property));
-        foreach (var violation in violations)
+        IEnumerable<IPropertySymbol> violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => PropertyHelper.IsArray(property) && !this.ShouldBeIgnored(property) && !HasProperAccess(property));
+        foreach (IPropertySymbol violation in violations)
         {
             Report(violation, info);
         }

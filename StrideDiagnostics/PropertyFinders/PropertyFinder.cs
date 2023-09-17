@@ -16,8 +16,8 @@ public class PropertyFinder : IPropertyFinder, IViolationReporter
     {
         if (baseType == null)
             return;
-        var violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => !PropertyHelper.IsArray(property) && !PropertyHelper.ImplementsICollectionT(property.Type) && !this.ShouldBeIgnored(property) && !HasProperAccess(property));
-        foreach (var violation in violations)
+        IEnumerable<IPropertySymbol> violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => !PropertyHelper.IsArray(property) && !PropertyHelper.ImplementsICollectionT(property.Type) && !this.ShouldBeIgnored(property) && !HasProperAccess(property));
+        foreach (IPropertySymbol violation in violations)
         {
             Report(violation, classInfo);
         }

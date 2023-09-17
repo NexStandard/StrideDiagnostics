@@ -10,7 +10,7 @@ internal static class PropertyHelper
 {
     public static bool IsArray(IPropertySymbol propertyInfo)
     {
-        var propertyType = propertyInfo.Type;
+        ITypeSymbol propertyType = propertyInfo.Type;
 
         if (propertyType.TypeKind == TypeKind.Array)
         {
@@ -32,7 +32,7 @@ internal static class PropertyHelper
     {
 
         INamedTypeSymbol dictionaryInterface = info.ExecutionContext.Compilation.GetTypeByMetadataName(typeof(IDictionary<,>).FullName);
-        var comparer = SymbolEqualityComparer.Default;
+        SymbolEqualityComparer comparer = SymbolEqualityComparer.Default;
         if (type.Type.AllInterfaces.Any(x => x.OriginalDefinition.Equals(dictionaryInterface, comparer)))
         {
             return true;

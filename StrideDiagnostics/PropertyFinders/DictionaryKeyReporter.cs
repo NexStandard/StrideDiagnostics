@@ -21,8 +21,8 @@ internal class DictionaryKeyReporter : IViolationReporter, IPropertyFinder
     {
         if (baseType == null)
             return;
-        var violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => PropertyHelper.IsDictionary(property, classInfo) && !this.ShouldBeIgnored(property) && HasProperAccess(property) && InvalidDictionaryKey(property, classInfo));
-        foreach (var violation in violations)
+        IEnumerable<IPropertySymbol> violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => PropertyHelper.IsDictionary(property, classInfo) && !this.ShouldBeIgnored(property) && HasProperAccess(property) && InvalidDictionaryKey(property, classInfo));
+        foreach (IPropertySymbol violation in violations)
         {
             Report(violation, classInfo);
         }
@@ -38,7 +38,7 @@ internal class DictionaryKeyReporter : IViolationReporter, IPropertyFinder
     {
         if (PropertyHelper.IsDictionary(property, info))
         {
-            var firstTypeArgument = ((INamedTypeSymbol)property.Type).TypeArguments[0];
+            ITypeSymbol firstTypeArgument = ((INamedTypeSymbol)property.Type).TypeArguments[0];
             if (firstTypeArgument != null && !firstTypeArgument.IsValueType)
             {
                 return true;

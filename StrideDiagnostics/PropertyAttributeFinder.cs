@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
-namespace StrideSourceGenerator.Core.Properties;
+namespace StrideDiagnostics;
 internal class PropertyAttributeFinder
 {
     List<string> allowedAttributes = new List<string>()
@@ -53,14 +53,14 @@ internal class PropertyAttributeFinder
     }
     private static bool HasDataMemberIgnoreAttribute(IPropertySymbol property)
     {
-        var attributes = property.GetAttributes();
-        foreach (var attribute in attributes)
+        System.Collections.Immutable.ImmutableArray<AttributeData> attributes = property.GetAttributes();
+        foreach (AttributeData attribute in attributes)
         {
-            var attributeType = attribute.AttributeClass;
+            INamedTypeSymbol attributeType = attribute.AttributeClass;
             if (attributeType != null)
             {
                 if (attributeType.Name == "DataMemberIgnore" &&
-                    (attributeType.ContainingNamespace.Name == "Stride.Core"))
+                    attributeType.ContainingNamespace.Name == "Stride.Core")
                 {
                     // Check if it's the desired attribute
                     return true;

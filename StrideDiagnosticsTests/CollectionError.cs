@@ -1,9 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Xunit;
 namespace StrideDiagnosticsTests;
-using System.Runtime.Serialization;
-
-using System.Runtime.Serialization;
 
 public class CollectionError
 {
