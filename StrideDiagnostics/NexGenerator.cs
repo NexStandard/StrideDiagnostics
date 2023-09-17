@@ -59,21 +59,16 @@ public class NexGenerator : ISourceGenerator
         INamedTypeSymbol baseType = semanticModel.GetDeclaredSymbol(info);
         while (baseType != null)
         {
-            ImmutableArray<AttributeData> x = baseType.GetAttributes();
-            ImmutableArray<KeyValuePair<string, TypedConstant>> x2;
+
             if (
                 baseType.GetAttributes().Any(attr =>
                     attr.AttributeClass.Name == "DataContractAttribute"
                      && attr.AttributeClass.ContainingNamespace.ContainingModule.Name == "Stride.Core.dll" &&
-                    (x2 = attr.NamedArguments).Any(arg =>
+                    attr.NamedArguments.Any(arg =>
                         arg.Key == "Inherited" && (bool)arg.Value.Value == true)))
             {
 
                 return true;
-            }
-            if (x2 != null && x2.Length > 0)
-            {
-                var x4 = "asdf";
             }
             // Check the next base class
             baseType = baseType.BaseType;
@@ -81,7 +76,5 @@ public class NexGenerator : ISourceGenerator
 
         return false;
     }
-    public const string CompilerServicesDiagnosticIdFormat = "STRD{0:000}";
-
     public const string CompilerServicesDiagnosticCategory = "Stride.CompilerServices";
 }

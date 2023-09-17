@@ -68,6 +68,7 @@ public class IgnoreMember
     {
         // Define the source code for the Class1 class with an invalid property
         string sourceCode = @"
+using Stride.Core;
 [DataContract]
 public class IgnoreMember
 {
@@ -80,8 +81,12 @@ public class IgnoreMember
         // Assert that there is an error
         Assert.True(!hasError, "The Property shouldnt be considered when private.");
     }
-
-}
+    [Fact]
+    public void InheritedError()
+    {
+        // Define the source code for the Class1 class with an invalid property
+        string sourceCode = @"
+using Stride.Core;
 [DataContract(Inherited = true)]
 public class BaseContract
 {
@@ -92,4 +97,12 @@ public class InheritedContract : BaseContract
     [DataMember]
     private string Property { get; set; }
 
+}";
+        IEnumerable<Diagnostic> generatedDiagnostics = DiagnosticsHelper.GetDiagnostics(sourceCode);
+        // Check if there are any diagnostics with the expected ID
+        bool hasError = generatedDiagnostics.Any(diagnostic => diagnostic.Id == "STRD003");
+
+        // Assert that there is an error
+        Assert.True(hasError, "The Property should generate an error.");
+    }
 }
