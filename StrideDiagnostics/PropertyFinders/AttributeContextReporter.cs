@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks.Sources;
 
 namespace StrideDiagnostics.PropertyFinders;
-internal class DoubledAnnotationReporter : IViolationReporter, IPropertyFinder
+internal class AttributeContextReporter : IViolationReporter, IPropertyFinder
 {
     /// <summary>
     /// Is always Empty
@@ -44,7 +44,7 @@ internal class DoubledAnnotationReporter : IViolationReporter, IPropertyFinder
             category: NexGenerator.CompilerServicesDiagnosticCategory,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            messageFormat: $"The Property has a contradiction in the Annotations, there can't be [DataMember] and [DataMemberIgnore] on the same Property.",
+            messageFormat: $"The Property has a contradiction in the Annotations, there can't be [DataMember] and [DataMemberIgnore] on the same Property.\nIt's also not allowed to annotate DataMember on a Property that Stride will ignore ( private/protected ).",
             helpLinkUri: "https://www.stride3d.net"
         );
         Location location = Location.Create(classInfo.TypeSyntax.SyntaxTree, property.DeclaringSyntaxReferences.FirstOrDefault().Span);

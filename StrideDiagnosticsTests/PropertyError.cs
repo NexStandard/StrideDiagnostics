@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Stride.Core;
 using System;
 using System.Collections.Generic;
@@ -79,4 +80,16 @@ public class IgnoreMember
         // Assert that there is an error
         Assert.True(!hasError, "The Property shouldnt be considered when private.");
     }
+
+}
+[DataContract(Inherited = true)]
+public class BaseContract
+{
+    private int Property { get; set; }
+}
+public class InheritedContract : BaseContract
+{
+    [DataMember]
+    private string Property { get; set; }
+
 }

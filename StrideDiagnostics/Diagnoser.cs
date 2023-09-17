@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using StrideDiagnostics.PropertyFinders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,67 +14,15 @@ internal class Diagnoser
     }
     private void DiagnoseDataMember(ClassInfo info)
     {
-        IViolationReporter arrayReporter = new ArrayPropertyFinder();
-        IViolationReporter collectionReporter = new CollectionPropertyFinder();
-        IViolationReporter propertyReporter = new PropertyFinder();
-        IViolationReporter dictionaryReporter = new DictionaryKeyReporter();
-        IViolationReporter doubleAnnotation = new DoubledAnnotationReporter();
-        var symbol = info.Symbol;
-        arrayReporter.ReportViolations(ref symbol, info);
-        collectionReporter.ReportViolations(ref symbol, info);
-        propertyReporter.ReportViolations(ref symbol, info);
-        dictionaryReporter.ReportViolations(ref symbol, info);
-        doubleAnnotation.ReportViolations(ref symbol, info);
-    }
+        var reporterTypes = typeof(Diagnoser).Assembly.GetTypes()
+            .Where(type => typeof(IViolationReporter).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract);
 
-
-
-    public static IEnumerable<IPropertySymbol> SearchIgnoredProperties(INamedTypeSymbol currentBaseType)
-    {
-        return currentBaseType.GetMembers().OfType<IPropertySymbol>().Where(property => !HasDataMemberIgnoreAttribute(property));
-    }
-    private static bool HasDataMemberIgnoreAttribute(IPropertySymbol property)
-    {
-        var attributes = property.GetAttributes();
-        foreach (var attribute in attributes)
+        // Instantiate each reporter and call ReportViolations
+        foreach (var reporterType in reporterTypes)
         {
-            var attributeType = attribute.AttributeClass;
-            if (attributeType != null)
-            {
-                if (attributeType.Name == "DataMemberIgnore" &&
-                    (attributeType.Name == "Stride.Core.DataMemberIgnore"))
-                {
-                    // Check if it's the desired attribute
-                    return true;
-                }
-            }
+            var reporter = (IViolationReporter)Activator.CreateInstance(reporterType);
+            var symbol = info.Symbol;
+            reporter.ReportViolations(ref symbol, info);
         }
-        return false;
-    }
-    public static bool HasValidAccessOnArrayOrCollection(IPropertySymbol property)
-    {
-        return
-                (property.GetMethod?.DeclaredAccessibility == Accessibility.Public ||
-                property.GetMethod?.DeclaredAccessibility == Accessibility.Internal);
-    }
-    public static bool IsCollectionOrArray(IPropertySymbol propertyInfo)
-    {
-        var propertyType = propertyInfo.Type;
-
-        // Check if it's an array
-        if (propertyType.TypeKind == TypeKind.Array)
-        {
-            return true;
-        }
-
-        // Check if it's a generic ICollection<T>
-        if (propertyType is INamedTypeSymbol namedTypeSymbol &&
-            namedTypeSymbol.IsGenericType &&
-            namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)
-        {
-            return true;
-        }
-
-        return false;
     }
 }
