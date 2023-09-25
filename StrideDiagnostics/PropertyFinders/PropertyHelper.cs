@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace StrideDiagnostics.PropertyFinders;
 
@@ -18,8 +19,13 @@ internal static class PropertyHelper
         }
         return false;
     }
-    public static bool ImplementsICollectionT(ITypeSymbol type)
+    public static bool IsICollection_generic(ITypeSymbol type)
     {
+        if (type is INamedTypeSymbol namedType &&
+    namedType.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)
+        {
+            return true;
+        }
         if (type.AllInterfaces.Any(i =>
             (i.OriginalDefinition is INamedTypeSymbol namedType && namedType.ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)))
         {
@@ -40,4 +46,10 @@ internal static class PropertyHelper
 
         return false;
     }
+}
+public class T
+{
+    [DataMember]
+    private int x { get; set; }
+
 }

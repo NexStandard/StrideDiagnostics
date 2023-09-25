@@ -13,7 +13,7 @@ public class NexGenerator : ISourceGenerator
 {
     public void Initialize(GeneratorInitializationContext context)
     {
-        Debugger.Launch();
+        // Debugger.Launch();
         context.RegisterForSyntaxNotifications(() => new NexSyntaxReceiver());
     }
     private Diagnoser classGenerator { get; set; } = new();

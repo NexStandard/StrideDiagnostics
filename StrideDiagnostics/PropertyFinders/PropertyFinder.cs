@@ -9,14 +9,14 @@ public class PropertyFinder : IPropertyFinder, IViolationReporter
     {
         if (baseType == null)
             return Enumerable.Empty<IPropertySymbol>();
-        return baseType.GetMembers().OfType<IPropertySymbol>().Where(property => !PropertyHelper.IsArray(property) && !PropertyHelper.ImplementsICollectionT(property.Type) && !this.ShouldBeIgnored(property) && HasProperAccess(property));
+        return baseType.GetMembers().OfType<IPropertySymbol>().Where(property => !PropertyHelper.IsArray(property) && !PropertyHelper.IsICollection_generic(property.Type) && !this.ShouldBeIgnored(property) && HasProperAccess(property));
     }
 
     public void ReportViolations(ref INamedTypeSymbol baseType, ClassInfo classInfo)
     {
         if (baseType == null)
             return;
-        IEnumerable<IPropertySymbol> violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => !PropertyHelper.IsArray(property) && !PropertyHelper.ImplementsICollectionT(property.Type) && !this.ShouldBeIgnored(property) && !HasProperAccess(property));
+        IEnumerable<IPropertySymbol> violations = baseType.GetMembers().OfType<IPropertySymbol>().Where(property => !PropertyHelper.IsArray(property) && !PropertyHelper.IsICollection_generic(property.Type) && !this.ShouldBeIgnored(property) && !HasProperAccess(property));
         foreach (IPropertySymbol violation in violations)
         {
             Report(violation, classInfo);

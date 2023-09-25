@@ -5,7 +5,7 @@ using Xunit;
 namespace StrideDiagnosticsTests;
 using System.Runtime.Serialization;
 
-public class ArrayError
+public class ErrorsForArrayProperties
 {
     [Fact]
     public void ErrorOnInvalidArrayAccess()

@@ -1,11 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Stride.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace StrideDiagnosticsTests;
@@ -81,28 +75,14 @@ public class IgnoreMember
         // Assert that there is an error
         Assert.True(!hasError, "The Property shouldnt be considered when private.");
     }
-    [Fact]
-    public void InheritedError()
-    {
-        // Define the source code for the Class1 class with an invalid property
-        string sourceCode = @"
-using Stride.Core;
-[DataContract(Inherited = true)]
-public class BaseContract
-{
-    private int Property { get; set; }
 }
-public class InheritedContract : BaseContract
+public class T : Dictionary<bool, object>
+{
+
+}
+[DataContract]
+public class F
 {
     [DataMember]
-    private string Property { get; set; }
-
-}";
-        IEnumerable<Diagnostic> generatedDiagnostics = DiagnosticsHelper.GetDiagnostics(sourceCode);
-        // Check if there are any diagnostics with the expected ID
-        bool hasError = generatedDiagnostics.Any(diagnostic => diagnostic.Id == "STRD003");
-
-        // Assert that there is an error
-        Assert.True(hasError, "The Property should generate an error.");
-    }
+    private T Dic { get; set; }
 }

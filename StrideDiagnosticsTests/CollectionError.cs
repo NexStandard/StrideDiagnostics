@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using StrideDiagnostics;
 using Xunit;
 namespace StrideDiagnosticsTests;
 
@@ -54,6 +55,42 @@ public class InvalidCollection
 
         // Assert that there is an error
         Assert.True(!hasError, "The 'List' property Access should be valid.");
+    }
+    [Fact]
+    public void NoError_On_ICollection_generic_Type_definition()
+    {
+        // Define the source code for the Class1 class with an invalid property
+        string sourceCode = @"
+[DataContract]
+public class InvalidCollection
+{
+    public System.Collections.Generic.ICollection<int> FancyList { get; }
+}}";
+
+        IEnumerable<Diagnostic> generatedDiagnostics = DiagnosticsHelper.GetDiagnostics(sourceCode);
+        // Check if there are any diagnostics with the expected ID
+        bool hasError = generatedDiagnostics.Any();
+
+        // Assert that there is an error
+        Assert.True(!hasError, "The 'List' property Access should be valid.");
+    }
+    [Fact]
+    public void Error_On_ICollection_generic_Type_definition_private_getter()
+    {
+        // Define the source code for the Class1 class with an invalid property
+        string sourceCode = @"
+[DataContract]
+public class InvalidCollection
+{
+    public System.Collections.Generic.ICollection<int> FancyList { private get; set; }
+}}";
+
+        IEnumerable<Diagnostic> generatedDiagnostics = DiagnosticsHelper.GetDiagnostics(sourceCode);
+        // Check if there are any diagnostics with the expected ID
+        bool hasError = generatedDiagnostics.Any(diagnostic => diagnostic.Id == ErrorCodes.CollectionAccess);
+
+        // Assert that there is an error
+        Assert.True(hasError, $"The 'ICollection<T>' with a private get should throw a ${nameof(ErrorCodes.CollectionAccess)}.");
     }
     [Fact]
     public void NoErrorOnCorrectCollectionAccess3()
